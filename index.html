@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="contenedor-padre">
+    <!-- Encabezado, toda la parte de arriba -->
+    <div class="encabezado">
+      <p>Hola, Bienvenido </p>
+      <div class="usuario">
+        <h2 id="nombre-usuario">Invitado</h2>
+        <img id="imagen-perfil" src="storage/img/" alt="Foto de perfil">
+      </div>
+      <div class="busqueda">
+        <input type="text" placeholder="Buscar ropa...">
+        <button><i class="material-icons">Buscar</i></button>
+      </div>
+    </div>
+
+    <!-- los botones donde se filtan las cosasa-->
+    <div class="filtros">
+      <button class="activo" data-filtro="all">Todos</button>
+      <button data-filtro="dress">Vestidos</button>
+      <button data-filtro="tshirt">Camisetas</button>
+      <button data-filtro="jeans">Jeans</button>
+    </div>
+
+    <!-- Productos -->
+    <div class="productos" id="contenedor-productos">
+    </div>
+  </div>
+
+  <!-- la parte de busqqueda -->
+  <div class="barra-superior">
+    <a href="index.html" class="active">🏠</a>
+    <a href="checkout.html">✅</a>
+    <a href="favoritos.html">✨</a>
+    <a href="perfil.html">🙋‍♂️</a>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
