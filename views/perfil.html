@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="contenedor-padre">
+    <div class="banner-superior">Mi Perfil</div>
+
+    <div class="formulario-perfil">
+      <div class="foto-perfil">
+        <img id="imagen-perfil" src="../storage/img/user.png" alt="Foto de perfil">
+        <input type="file" id="input-imagen" accept="image/*">
+      </div>
+
+      <label for="input-nombre">Nombre:</label>
+      <input type="text" id="input-nombre" placeholder="Tu nombre">
+
+      <label for="input-correo">Correo electrónico:</label>
+      <input type="email" id="input-correo" placeholder="correo@ejemplo.com">
+
+      <label for="input-telefono">Teléfono:</label>
+      <input type="tel" id="input-telefono" placeholder="1234567890">
+
+      <label for="input-direccion">Dirección:</label>
+      <input type="text" id="input-direccion" placeholder="Tu dirección">
+
+      <label for="input-ciudad">Ciudad:</label>
+      <input type="text" id="input-ciudad" placeholder="Tu ciudad">
+
+      <button id="guardar-perfil">Guardar Cambios</button>
+    </div>
+  </div>
+
+  <div class="barra-superior">
+    <a href="../index.html">🏠</a>
+    <a href="checkout.html">🛒</a>
+    <a href="favoritos.html">❤️</a>
+    <a href="perfil.html" class="active">👤</a>
+  </div>
+
+  <script src="../js/perfil.js"></script>
+</body>
+</html>
