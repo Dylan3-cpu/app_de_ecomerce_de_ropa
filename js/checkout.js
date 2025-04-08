@@ -6,6 +6,21 @@ function formatearPrecioCOP(precio) {
   }).format(precio)
 }
 
+// Función para verificar si una imagen existe
+function verificarImagen(img) {
+  img.onerror = function () {
+    console.error("Error cargando imagen:", this.src)
+    // Intentar con una ruta alternativa
+    if (this.src.includes("img/")) {
+      this.src = this.src.replace("img/", "storage/img/")
+    } else if (this.src.includes("storage/img/")) {
+      this.src = this.src.replace("storage/img/", "img/")
+    } else {
+      this.src = "../storage/img/user.png" // Imagen de respaldo
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const contenedorCarrito = document.getElementById("contenedor-carrito")
   const btnPagar = document.getElementById("btn-pagar")
@@ -33,7 +48,7 @@ function renderCarrito(carrito) {
     div.dataset.index = index
 
     div.innerHTML = `
-      <img src="${producto.imagen}" alt="${producto.nombre}">
+      <img src="${producto.imagen}" alt="${producto.nombre}" onerror="this.onerror=null; this.src='../storage/img/user.png';">
       <div class="info-carrito">
         <h3>${producto.nombre}</h3>
         <p>Talla: ${producto.talla} | Color: <span class="color-muestra" style="background-color:${producto.color}"></span></p>
@@ -46,6 +61,10 @@ function renderCarrito(carrito) {
         <p>${formatearPrecioCOP(producto.precio * producto.cantidad)}</p>
       </div>
     `
+
+    // Verificar la imagen del producto
+    const img = div.querySelector("img")
+    verificarImagen(img)
 
     contenedorCarrito.appendChild(div)
   })
@@ -106,7 +125,7 @@ function configurarModalPago() {
 
     if (!perfil.nombre || !perfil.direccion) {
       alert("Por favor completa tu perfil antes de realizar la compra")
-      window.location.href = "../views/perfil.html"
+      window.location.href = "perfil.html"
       return
     }
 
