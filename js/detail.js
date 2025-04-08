@@ -13,11 +13,13 @@ document.addEventListener("DOMContentLoaded", () => {
     categoria: "dress",
     precio: 159960,
     rating: 4.5,
-    imagen: "img/vestido1.jpg",
+    imagen: "../img/vestido1.jpg",
     descripcion: "Vestido floral de verano con corte A. 100% algodón orgánico.",
   }
 
-  document.getElementById("detalle-img").src = producto.imagen
+  document.getElementById("detalle-img").src = producto.imagen.startsWith("../")
+    ? producto.imagen
+    : "../" + producto.imagen
   document.querySelector(".titulo-producto").textContent = producto.nombre
   document.querySelector(".detalle-rating span:nth-child(2)").textContent = producto.rating
   document.querySelector(".descripcion").textContent = producto.descripcion
@@ -107,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
       nombre: producto.nombre,
       precio: precioUnitario,
       cantidad: contador,
-      imagen: producto.imagen,
+      imagen: producto.imagen.startsWith("../") ? producto.imagen : "../" + producto.imagen,
       talla: document.querySelector(".tallas .activo").textContent,
       color: document.querySelector(".colores .activo").style.backgroundColor,
     }
