@@ -35,17 +35,17 @@ function renderFavoritos(favoritos) {
     div.dataset.id = producto.id
 
     div.innerHTML = `
-      <img src="${producto.imagen}" alt="${producto.nombre}">
-      <div class="info">
-        <h3>${producto.nombre}</h3>
-        <p>${producto.categoria}</p>
-        <div class="precio-rating">
-          <span>${formatearPrecioCOP(producto.precio)}</span>
-          <span>⭐ ${producto.rating}</span>
-        </div>
-      </div>
-      <div class="icono-corazon">❤️</div>
-    `
+  <img src="${producto.imagen.replace("./", "../")}" alt="${producto.nombre}">
+  <div class="info">
+    <h3>${producto.nombre}</h3>
+    <p>${producto.categoria}</p>
+    <div class="precio-rating">
+      <span>${formatearPrecioCOP(producto.precio)}</span>
+      <span>⭐ ${producto.rating}</span>
+    </div>
+  </div>
+  <div class="icono-corazon">❤️</div>
+`
 
     contenedorFavoritos.appendChild(div)
   })
@@ -72,7 +72,7 @@ function configurarEventosFavoritos() {
 
       if (producto) {
         localStorage.setItem("productoDetalle", JSON.stringify(producto))
-        window.location.href = "../views/detail.html"
+        window.location.href = "detail.html"
       }
     }
   })

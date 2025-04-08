@@ -7,17 +7,26 @@ function formatearPrecioCOP(precio) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Verificar que las imágenes se carguen correctamente
+  const detalleImg = document.getElementById("detalle-img")
+  detalleImg.onerror = function () {
+    console.error("Error cargando imagen de detalle:", this.src)
+    this.src = "../storage/img/user.png" // Imagen de respaldo
+  }
+
   const producto = JSON.parse(localStorage.getItem("productoDetalle")) || {
     id: 1,
     nombre: "Vestido Floral Verano",
     categoria: "dress",
     precio: 159960,
     rating: 4.5,
-    imagen: "img/vestido1.jpg",
+    imagen: "../img/vestido1.jpg",
     descripcion: "Vestido floral de verano con corte A. 100% algodón orgánico.",
   }
 
-  document.getElementById("detalle-img").src = producto.imagen
+  // Corregir la ruta de la imagen
+  const imagenPath = producto.imagen.replace("./", "../")
+  document.getElementById("detalle-img").src = imagenPath.startsWith("../") ? imagenPath : "../" + imagenPath
   document.querySelector(".titulo-producto").textContent = producto.nombre
   document.querySelector(".detalle-rating span:nth-child(2)").textContent = producto.rating
   document.querySelector(".descripcion").textContent = producto.descripcion
@@ -107,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
       nombre: producto.nombre,
       precio: precioUnitario,
       cantidad: contador,
-      imagen: producto.imagen,
+      imagen: producto.imagen.replace("./", "../"),
       talla: document.querySelector(".tallas .activo").textContent,
       color: document.querySelector(".colores .activo").style.backgroundColor,
     }

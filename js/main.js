@@ -13,7 +13,7 @@ const productos = [
     categoria: "dress",
     precio: 159960,
     rating: 4.5,
-    imagen: "img/vestido1.jpg",
+    imagen: "./img/vestido1.jpg",
     descripcion: "Vestido floral de verano con corte A. 100% algodón orgánico.",
   },
   {
@@ -22,7 +22,7 @@ const productos = [
     categoria: "tshirt",
     precio: 79960,
     rating: 4.2,
-    imagen: "img/camiseta1.jpg",
+    imagen: "./img/camiseta1.jpg",
     descripcion: "Camiseta básica de algodón. Corte clásico y cómodo.",
   },
   {
@@ -31,7 +31,7 @@ const productos = [
     categoria: "jeans",
     precio: 199960,
     rating: 4.7,
-    imagen: "img/jeans1.jpg",
+    imagen: "./img/jeans1.jpg",
     descripcion: "Jeans ajustados con elastano para mayor comodidad.",
   },
   {
@@ -40,7 +40,7 @@ const productos = [
     categoria: "dress",
     precio: 239960,
     rating: 4.8,
-    imagen: "img/vestido2.jpg",
+    imagen: "./img/vestido2.jpg",
     descripcion: "Vestido negro para ocasiones especiales. Corte midi.",
   },
   {
@@ -49,7 +49,7 @@ const productos = [
     categoria: "tshirt",
     precio: 99960,
     rating: 4.3,
-    imagen: "img/camiseta2.jpg",
+    imagen: "./img/camiseta2.jpg",
     descripcion: "Camiseta oversized de corte moderno. Varios colores.",
   },
   {
@@ -58,10 +58,18 @@ const productos = [
     categoria: "jeans",
     precio: 219960,
     rating: 4.6,
-    imagen: "img/jeans2.jpg",
+    imagen: "./img/jeans2.jpg",
     descripcion: "Jeans estilo mom fit. Tiro alto y ajuste perfecto.",
   },
 ]
+
+// Añadir esta función para verificar si las imágenes existen
+function verificarImagen(img) {
+  img.onerror = () => {
+    console.error("Error cargando imagen:", img.src)
+    img.src = "storage/img/user.png" // Imagen de respaldo
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const contenedorProductos = document.getElementById("contenedor-productos")
@@ -74,6 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   if (usuario.imagen) {
     document.getElementById("imagen-perfil").src = usuario.imagen
+  } else {
+    document.getElementById("imagen-perfil").src = "storage/img/user.png"
   }
 
   function renderProductos(productosMostrar) {
@@ -93,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
       div.className = "producto"
       div.dataset.categoria = producto.categoria
       div.innerHTML = `
-        <img src="${producto.imagen}" alt="${producto.nombre}">
+        <img src="${producto.imagen}" alt="${producto.nombre}" onerror="this.src='storage/img/user.png'">
         <div class="info">
           <h3>${producto.nombre}</h3>
           <p>${producto.categoria}</p>
@@ -105,10 +115,37 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="icono-corazon">🤍</div>
       `
 
-      div.addEventListener("click", () => {
+      // Verificar todas las imágenes
+      const img = div.querySelector("img")
+      verificarImagen(img)
+
+      div.addEventListener("click", (e) => {
+        if (e.target.closest(".icono-corazon")) {
+          e.stopPropagation()
+          const favoritos = JSON.parse(localStorage.getItem("favoritos")) || []
+          const existe = favoritos.some((fav) => fav.id === producto.id)
+
+          if (existe) {
+            const nuevosFavoritos = favoritos.filter((fav) => fav.id !== producto.id)
+            localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos))
+            e.target.closest(".icono-corazon").textContent = "🤍"
+          } else {
+            favoritos.push(producto)
+            localStorage.setItem("favoritos", JSON.stringify(favoritos))
+            e.target.closest(".icono-corazon").textContent = "❤️"
+          }
+          return
+        }
+
         localStorage.setItem("productoDetalle", JSON.stringify(producto))
         window.location.href = "views/detail.html"
       })
+
+      // Verificar si está en favoritos
+      const favoritos = JSON.parse(localStorage.getItem("favoritos")) || []
+      if (favoritos.some((fav) => fav.id === producto.id)) {
+        div.querySelector(".icono-corazon").textContent = "❤️"
+      }
 
       contenedorProductos.appendChild(div)
     })

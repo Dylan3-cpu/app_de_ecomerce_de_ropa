@@ -8,6 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const imagenPerfil = document.getElementById("imagen-perfil")
   const btnGuardar = document.getElementById("guardar-perfil")
 
+  // Asegurarse de que la imagen de perfil se cargue correctamente
+  imagenPerfil.onerror = function () {
+    this.src = "../storage/img/user.png"
+  }
+
   const perfil = JSON.parse(localStorage.getItem("perfil")) || {}
 
   if (perfil.nombre) nombreInput.value = perfil.nombre
@@ -29,6 +34,16 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   btnGuardar.addEventListener("click", () => {
+    if (!nombreInput.value) {
+      alert("Por favor ingresa tu nombre")
+      return
+    }
+
+    if (!direccionInput.value) {
+      alert("Por favor ingresa tu dirección")
+      return
+    }
+
     const nuevoPerfil = {
       nombre: nombreInput.value,
       correo: correoInput.value,
