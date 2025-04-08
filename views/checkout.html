@@ -4,39 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carrito de Compras</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/checkout.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/checkout.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
   <div class="contenedor-padre">
     <div class="banner-superior">Tu Carrito</div>
 
-    <div id="contenedor-carrito" class="productos">
-      <!-- Los productos del carrito se cargarán aquí -->
+    <div id="contenedor-carrito">
     </div>
 
     <div class="resumen-compra">
       <div class="resumen-item">
         <span>Subtotal</span>
-        <span id="subtotal">$0.00</span>
+        <span id="subtotal">$0</span>
       </div>
       <div class="resumen-item">
         <span>Envío</span>
-        <span id="envio">$5.99</span>
+        <span id="envio">$15.000</span>
       </div>
       <div class="resumen-item total">
         <span>Total</span>
-        <span id="total">$0.00</span>
+        <span id="total">$0</span>
       </div>
-      <button class="btn-pagar" onclick="abrirVentanaCompra()">Pagar</button>
+      <button class="btn-pagar" id="btn-pagar">Pagar</button>
     </div>
   </div>
 
-  <!-- Ventana de verificación -->
-  <div id="ventana-compra">
-    <div class="ventana-contenido">
-      <span class="ventana-cerrar" onclick="cerrarVentanaCompra()">✖</span>
+  <div id="modal-pago">
+    <div class="modal-contenido">
+      <span class="modal-cerrar">✖</span>
       <h2>Verifique sus datos</h2>
       <div id="datos-perfil"></div>
       <div id="resumen-ventana"></div>
@@ -44,20 +42,18 @@
     </div>
   </div>
 
-  <!-- Mensaje de éxito -->
   <div id="mensaje-exito">
     <span class="material-icons">check_circle</span>
     <p>¡Compra realizada con éxito!</p>
   </div>
 
-  <!-- Barra de navegación -->
   <div class="barra-superior">
-    <a href="index.html">🏠</a>
-    <a href="checkout.html">🛒</a>
+    <a href="../index.html">🏠</a>
+    <a href="checkout.html" class="active">🛒</a>
     <a href="favoritos.html">❤️</a>
     <a href="perfil.html">👤</a>
   </div>
 
-  <script src="js/checkout.js"></script>
+  <script src="../js/checkout.js"></script>
 </body>
 </html>
