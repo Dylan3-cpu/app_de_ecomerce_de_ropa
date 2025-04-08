@@ -106,7 +106,7 @@ function configurarModalPago() {
 
     if (!perfil.nombre || !perfil.direccion) {
       alert("Por favor completa tu perfil antes de realizar la compra")
-      window.location.href = "perfil.html"
+      window.location.href = "../views/perfil.html"
       return
     }
 
