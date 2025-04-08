@@ -63,10 +63,29 @@ const productos = [
   },
 ]
 
+// Función para verificar si una imagen existe
+function verificarImagen(img) {
+  img.onerror = function () {
+    console.error("Error cargando imagen:", this.src)
+    // Intentar con una ruta alternativa
+    if (this.src.includes("img/")) {
+      this.src = this.src.replace("img/", "storage/img/")
+    } else if (this.src.includes("storage/img/")) {
+      this.src = this.src.replace("storage/img/", "img/")
+    } else {
+      this.src = "storage/img/user.png" // Imagen de respaldo
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const contenedorProductos = document.getElementById("contenedor-productos")
   const inputBusqueda = document.querySelector(".busqueda input")
   const filtroBotones = document.querySelectorAll(".filtros button")
+
+  // Verificar la imagen de perfil
+  const imagenPerfil = document.getElementById("imagen-perfil")
+  verificarImagen(imagenPerfil)
 
   const usuario = JSON.parse(localStorage.getItem("usuario")) || {}
   if (usuario.nombre) {
@@ -74,8 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   if (usuario.imagen) {
     document.getElementById("imagen-perfil").src = usuario.imagen
+    verificarImagen(document.getElementById("imagen-perfil"))
   } else {
     document.getElementById("imagen-perfil").src = "storage/img/user.png"
+    verificarImagen(document.getElementById("imagen-perfil"))
   }
 
   function renderProductos(productosMostrar) {
@@ -95,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
       div.className = "producto"
       div.dataset.categoria = producto.categoria
       div.innerHTML = `
-        <img src="${producto.imagen}" alt="${producto.nombre}">
+        <img src="${producto.imagen}" alt="${producto.nombre}" onerror="this.onerror=null; this.src='storage/img/user.png';">
         <div class="info">
           <h3>${producto.nombre}</h3>
           <p>${producto.categoria}</p>
@@ -106,6 +127,10 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
         <div class="icono-corazon">🤍</div>
       `
+
+      // Verificar la imagen del producto
+      const img = div.querySelector("img")
+      verificarImagen(img)
 
       div.addEventListener("click", (e) => {
         if (e.target.closest(".icono-corazon")) {

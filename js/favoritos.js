@@ -6,6 +6,21 @@ function formatearPrecioCOP(precio) {
   }).format(precio)
 }
 
+// Función para verificar si una imagen existe
+function verificarImagen(img) {
+  img.onerror = function () {
+    console.error("Error cargando imagen:", this.src)
+    // Intentar con una ruta alternativa
+    if (this.src.includes("img/")) {
+      this.src = this.src.replace("img/", "storage/img/")
+    } else if (this.src.includes("storage/img/")) {
+      this.src = this.src.replace("storage/img/", "img/")
+    } else {
+      this.src = "../storage/img/user.png" // Imagen de respaldo
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const contenedorFavoritos = document.getElementById("contenedor-favoritos")
 
@@ -34,8 +49,14 @@ function renderFavoritos(favoritos) {
     div.className = "producto"
     div.dataset.id = producto.id
 
+    // Corregir la ruta de la imagen
+    let imagenPath = producto.imagen
+    if (!imagenPath.startsWith("../")) {
+      imagenPath = "../" + imagenPath
+    }
+
     div.innerHTML = `
-      <img src="${producto.imagen.startsWith("../") ? producto.imagen : "../" + producto.imagen}" alt="${producto.nombre}">
+      <img src="${imagenPath}" alt="${producto.nombre}" onerror="this.onerror=null; this.src='../storage/img/user.png';">
       <div class="info">
         <h3>${producto.nombre}</h3>
         <p>${producto.categoria}</p>
@@ -46,6 +67,10 @@ function renderFavoritos(favoritos) {
       </div>
       <div class="icono-corazon">❤️</div>
     `
+
+    // Verificar la imagen del producto
+    const img = div.querySelector("img")
+    verificarImagen(img)
 
     contenedorFavoritos.appendChild(div)
   })

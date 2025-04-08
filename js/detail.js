@@ -6,7 +6,26 @@ function formatearPrecioCOP(precio) {
   }).format(precio)
 }
 
+// Función para verificar si una imagen existe
+function verificarImagen(img) {
+  img.onerror = function () {
+    console.error("Error cargando imagen:", this.src)
+    // Intentar con una ruta alternativa
+    if (this.src.includes("img/")) {
+      this.src = this.src.replace("img/", "storage/img/")
+    } else if (this.src.includes("storage/img/")) {
+      this.src = this.src.replace("storage/img/", "img/")
+    } else {
+      this.src = "../storage/img/user.png" // Imagen de respaldo
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  // Verificar la imagen del detalle
+  const detalleImg = document.getElementById("detalle-img")
+  verificarImagen(detalleImg)
+
   const producto = JSON.parse(localStorage.getItem("productoDetalle")) || {
     id: 1,
     nombre: "Vestido Floral Verano",
@@ -17,9 +36,14 @@ document.addEventListener("DOMContentLoaded", () => {
     descripcion: "Vestido floral de verano con corte A. 100% algodón orgánico.",
   }
 
-  document.getElementById("detalle-img").src = producto.imagen.startsWith("../")
-    ? producto.imagen
-    : "../" + producto.imagen
+  // Corregir la ruta de la imagen
+  let imagenPath = producto.imagen
+  if (!imagenPath.startsWith("../")) {
+    imagenPath = "../" + imagenPath
+  }
+  document.getElementById("detalle-img").src = imagenPath
+  verificarImagen(document.getElementById("detalle-img"))
+
   document.querySelector(".titulo-producto").textContent = producto.nombre
   document.querySelector(".detalle-rating span:nth-child(2)").textContent = producto.rating
   document.querySelector(".descripcion").textContent = producto.descripcion
@@ -97,19 +121,27 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("favoritos", JSON.stringify(favoritos))
   })
 
+  // Corregir el botón de volver
   document.querySelector(".btn-volver").addEventListener("click", () => {
-    window.history.back()
+    // En lugar de usar window.history.back(), vamos directamente a la página principal
+    window.location.href = "../index.html"
   })
 
   document.querySelector(".btn-carrito").addEventListener("click", () => {
     const carrito = JSON.parse(localStorage.getItem("carrito")) || []
+
+    // Asegurarse de que la ruta de la imagen sea correcta
+    let imagenCarrito = producto.imagen
+    if (!imagenCarrito.startsWith("../")) {
+      imagenCarrito = "../" + imagenCarrito
+    }
 
     const itemCarrito = {
       id: producto.id,
       nombre: producto.nombre,
       precio: precioUnitario,
       cantidad: contador,
-      imagen: producto.imagen.startsWith("../") ? producto.imagen : "../" + producto.imagen,
+      imagen: imagenCarrito,
       talla: document.querySelector(".tallas .activo").textContent,
       color: document.querySelector(".colores .activo").style.backgroundColor,
     }
