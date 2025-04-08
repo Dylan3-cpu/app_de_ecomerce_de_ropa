@@ -74,6 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   if (usuario.imagen) {
     document.getElementById("imagen-perfil").src = usuario.imagen
+  } else {
+    document.getElementById("imagen-perfil").src = "storage/img/user.png"
   }
 
   function renderProductos(productosMostrar) {
@@ -105,10 +107,33 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="icono-corazon">🤍</div>
       `
 
-      div.addEventListener("click", () => {
+      div.addEventListener("click", (e) => {
+        if (e.target.closest(".icono-corazon")) {
+          e.stopPropagation()
+          const favoritos = JSON.parse(localStorage.getItem("favoritos")) || []
+          const existe = favoritos.some((fav) => fav.id === producto.id)
+
+          if (existe) {
+            const nuevosFavoritos = favoritos.filter((fav) => fav.id !== producto.id)
+            localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos))
+            e.target.closest(".icono-corazon").textContent = "🤍"
+          } else {
+            favoritos.push(producto)
+            localStorage.setItem("favoritos", JSON.stringify(favoritos))
+            e.target.closest(".icono-corazon").textContent = "❤️"
+          }
+          return
+        }
+
         localStorage.setItem("productoDetalle", JSON.stringify(producto))
         window.location.href = "views/detail.html"
       })
+
+      // Verificar si está en favoritos
+      const favoritos = JSON.parse(localStorage.getItem("favoritos")) || []
+      if (favoritos.some((fav) => fav.id === producto.id)) {
+        div.querySelector(".icono-corazon").textContent = "❤️"
+      }
 
       contenedorProductos.appendChild(div)
     })

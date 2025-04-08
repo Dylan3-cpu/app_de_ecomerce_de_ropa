@@ -35,7 +35,7 @@ function renderFavoritos(favoritos) {
     div.dataset.id = producto.id
 
     div.innerHTML = `
-      <img src="${producto.imagen}" alt="${producto.nombre}">
+      <img src="${producto.imagen.startsWith("../") ? producto.imagen : "../" + producto.imagen}" alt="${producto.nombre}">
       <div class="info">
         <h3>${producto.nombre}</h3>
         <p>${producto.categoria}</p>
@@ -72,7 +72,7 @@ function configurarEventosFavoritos() {
 
       if (producto) {
         localStorage.setItem("productoDetalle", JSON.stringify(producto))
-        window.location.href = "../views/detail.html"
+        window.location.href = "detail.html"
       }
     }
   })
